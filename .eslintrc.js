@@ -9,7 +9,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:prettier/recommended",
-    "prettier/@typescript-eslint",
+    "prettier",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript"
@@ -84,6 +84,6 @@ module.exports = {
     "quote-props": "off",
     radix: "error",
     "sort-imports": "warn",
-    "spaced-comment": "error",
+    "spaced-comment": "error"
   }
 };
