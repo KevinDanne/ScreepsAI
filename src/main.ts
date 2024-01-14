@@ -1,14 +1,14 @@
-import { ErrorMapper } from "utils/ErrorMapper";
+import { BasesManager, CreepManager } from "./managers";
+import { MemoryManager } from "./managers/memory.manager";
 
-// When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
-// This utility uses source maps to get the line numbers and file names of the original, TS source code
-export const loop = ErrorMapper.wrapLoop(() => {
+const basesManager = new BasesManager();
+const creepManager = new CreepManager();
+const memoryManager = new MemoryManager();
+
+export function loop(): void {
     console.log(`Current game tick is ${Game.time}`);
 
-    // Automatically delete memory of missing creeps
-    for (const name in Memory.creeps) {
-        if (!(name in Game.creeps)) {
-            delete Memory.creeps[name];
-        }
-    }
-});
+    basesManager.run();
+    creepManager.run();
+    memoryManager.run();
+}
