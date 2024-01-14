@@ -14,8 +14,6 @@ export function loop(): void {
 }
 
 /*
-    limit creeps [DONE]
-    add spawn definitions [DONE]
     TODO create builder role
     TODO Add logic in upgrader code to create construction site for storage next to the controller
     TODO update upgrader code to withdraw resources from storage

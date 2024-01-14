@@ -21,11 +21,9 @@ export class UpgraderRole {
             return;
         }
 
+        creep.say("⚒️");
         if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) {
             creep.moveTo(creep.room.controller);
-            creep.say("Moving");
-        } else {
-            creep.say("Upgrading");
         }
     }
 
@@ -35,6 +33,7 @@ export class UpgraderRole {
             return;
         }
 
+        creep.say("⚖️");
         if (creep.withdraw(spawns[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
             creep.moveTo(spawns[0]);
         }

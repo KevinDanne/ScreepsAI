@@ -18,11 +18,9 @@ export class HarvesterRole {
 
         creep.memory.targetSourceId = targetSource.id;
 
+        creep.say("⛏️");
         if (creep.harvest(targetSource) === ERR_NOT_IN_RANGE) {
             creep.moveTo(targetSource);
-            creep.say("Moving");
-        } else {
-            creep.say("Harvesting");
         }
     }
 
@@ -58,11 +56,9 @@ export class HarvesterRole {
             return;
         }
 
+        creep.say("\uD83C\uDFE6");
         if (creep.transfer(spawn, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
             creep.moveTo(spawn);
-            creep.say("Moving");
-        } else {
-            creep.say("Transferring");
         }
     }
 }
