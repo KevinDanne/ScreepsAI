@@ -7,11 +7,17 @@ export class UpgraderRole {
             return;
         }
 
+        if (creep.memory.upgrading && creep.store.getCapacity(RESOURCE_ENERGY) === 0) {
+            creep.memory.upgrading = false;
+        } else if (!creep.memory.upgrading && creep.store.getFreeCapacity() === 0) {
+            creep.memory.upgrading = true;
+        }
+
         const spawns = creep.room.find(FIND_MY_STRUCTURES, { filter: s => s.structureType === STRUCTURE_SPAWN });
         if (spawns.length === 0) {
             return;
         }
-        if (creep.store.getCapacity(RESOURCE_ENERGY) > 0) {
+        if (creep.memory.upgrading) {
             if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);
                 creep.say("Moving");

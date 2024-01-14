@@ -9,6 +9,7 @@ declare global {
 
     interface CreepMemory {
         role: CreepRole;
-        upgrading: boolean;
+        targetSourceId?: Id<Source>;
+        upgrading?: boolean;
     }
 }

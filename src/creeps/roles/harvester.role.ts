@@ -1,27 +1,35 @@
 export class HarvesterRole {
     public static run(creep: Creep): void {
         if (creep.store.getFreeCapacity() > 0) {
-            const sources = creep.room.find(FIND_SOURCES);
-            if (sources.length === 0) {
-                return;
-            }
+            let targetSource = creep.memory.targetSourceId ? Game.getObjectById(creep.memory.targetSourceId) : null;
 
-            // TODO caching
-            let sourceWithFewestCreeps: Source | undefined;
-            let sourceWithFewestCreepsCount: number | undefined;
-            for (const source of sources) {
-                const creepsInRange = source.pos.findInRange(FIND_MY_CREEPS, 3, { filter: c => c.id !== creep.id });
-                if (sourceWithFewestCreepsCount === undefined || creepsInRange.length < sourceWithFewestCreepsCount) {
-                    sourceWithFewestCreeps = source;
-                    sourceWithFewestCreepsCount = creepsInRange.length;
+            if (targetSource === null) {
+                const sources = creep.room.find(FIND_SOURCES);
+                if (sources.length === 0) {
+                    return;
                 }
-            }
-            if (sourceWithFewestCreeps === undefined) {
-                return;
+
+                let sourceWithFewestCreepsCount: number | undefined;
+                for (const source of sources) {
+                    const creepsInRange = source.pos.findInRange(FIND_MY_CREEPS, 3, {
+                        filter: c => c.id !== creep.id
+                    });
+                    if (
+                        sourceWithFewestCreepsCount === undefined ||
+                        creepsInRange.length < sourceWithFewestCreepsCount
+                    ) {
+                        targetSource = source;
+                        sourceWithFewestCreepsCount = creepsInRange.length;
+                    }
+                }
+                if (targetSource === undefined || targetSource === null) {
+                    return;
+                }
+                creep.memory.targetSourceId = targetSource.id;
             }
 
-            if (creep.harvest(sourceWithFewestCreeps) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(sourceWithFewestCreeps);
+            if (creep.harvest(targetSource) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(targetSource);
                 creep.say("Moving");
             } else {
                 creep.say("Harvesting");
