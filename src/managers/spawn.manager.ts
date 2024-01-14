@@ -15,18 +15,19 @@ export class SpawnManager implements Runnable {
         const harvesterCreeps = creeps.filter(creep => creep.memory.role === CreepRole.Harvester);
         const upgraderCreeps = creeps.filter(creep => creep.memory.role === CreepRole.Upgrader);
 
+        // Spawn new upgrader creep
         if (
             harvesterCreeps.length > this._minHarvesterCreepCount &&
             upgraderCreeps.length < this._minUpgraderCreepCount
         ) {
-            // Spawn new upgrader creep
             this._spawn.spawnCreep([MOVE, MOVE, CARRY, WORK], Game.time.toString(), {
                 memory: {
                     role: CreepRole.Upgrader
                 }
             });
-        } else {
-            // Spawn new harvester creeps
+        }
+        // Spawn new harvester creeps
+        else {
             this._spawn.spawnCreep([MOVE, MOVE, CARRY, WORK], Game.time.toString(), {
                 memory: {
                     role: CreepRole.Harvester
