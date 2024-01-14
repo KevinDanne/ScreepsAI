@@ -1,9 +1,11 @@
+import { CREEP_ROLE_DEFINITIONS } from "../constants";
 import { CreepRole } from "../types";
 import { Runnable } from "../interfaces";
 
 export class SpawnManager implements Runnable {
     private _spawn: StructureSpawn;
     private _minHarvesterCreepCount = 3;
+    private _maxHarvesterCreepCount = 10;
     private _minUpgraderCreepCount = 1;
 
     public constructor(spawn: StructureSpawn) {
@@ -20,15 +22,21 @@ export class SpawnManager implements Runnable {
             harvesterCreeps.length > this._minHarvesterCreepCount &&
             upgraderCreeps.length < this._minUpgraderCreepCount
         ) {
-            this._spawn.spawnCreep([MOVE, MOVE, CARRY, WORK], Game.time.toString(), {
+            const harvesterRoleDefinition = CREEP_ROLE_DEFINITIONS.get(CreepRole.Harvester);
+            if (!harvesterRoleDefinition) return;
+
+            this._spawn.spawnCreep(harvesterRoleDefinition.parts, Game.time.toString(), {
                 memory: {
                     role: CreepRole.Upgrader
                 }
             });
         }
         // Spawn new harvester creeps
-        else {
-            this._spawn.spawnCreep([MOVE, MOVE, CARRY, WORK], Game.time.toString(), {
+        else if (harvesterCreeps.length < this._maxHarvesterCreepCount) {
+            const upgraderRoleDefinition = CREEP_ROLE_DEFINITIONS.get(CreepRole.Upgrader);
+            if (!upgraderRoleDefinition) return;
+
+            this._spawn.spawnCreep(upgraderRoleDefinition.parts, Game.time.toString(), {
                 memory: {
                     role: CreepRole.Harvester
                 }
