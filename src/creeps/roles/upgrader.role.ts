@@ -7,7 +7,6 @@ export class UpgraderRole {
             return;
         }
 
-        // TODO get resources from spawn (NO HARVESTING!!!)
         const spawns = creep.room.find(FIND_MY_STRUCTURES, { filter: s => s.structureType === STRUCTURE_SPAWN });
         if (spawns.length === 0) {
             return;
