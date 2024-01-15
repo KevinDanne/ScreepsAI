@@ -1,46 +1,57 @@
-import { CREEP_ROLE_DEFINITIONS } from "../constants";
-import { CreepRole } from "../types";
+import { CREEP_ROLE_DEFINITIONS, CREEP_SPAWN_DEFINITIONS } from "../constants";
 import { Runnable } from "../interfaces";
 
+/**
+ * Spawns new creeps based on CREEP_SPAWN_DEFINITIONS and CREEP_ROLE_DEFINITIONS
+ */
 export class SpawnManager implements Runnable {
     private _spawn: StructureSpawn;
-    private _minHarvesterCreepCount = 3;
-    private _maxHarvesterCreepCount = 10;
-    private _minUpgraderCreepCount = 1;
 
     public constructor(spawn: StructureSpawn) {
         this._spawn = spawn;
     }
 
+    /**
+     * Main loop to manage state and spawns
+     */
     public run(): void {
+        this.spawnNewCreeps();
+    }
+
+    /**
+     * Spawns new creeps based on CREEP_SPAWN_DEFINITIONS
+     */
+    private spawnNewCreeps(): void {
         const creeps = this._spawn.room.find(FIND_MY_CREEPS);
-        const harvesterCreeps = creeps.filter(creep => creep.memory.role === CreepRole.Harvester);
-        const upgraderCreeps = creeps.filter(creep => creep.memory.role === CreepRole.Upgrader);
+        const creepSpawnDefinitions = CREEP_SPAWN_DEFINITIONS.entries();
 
-        // Spawn new upgrader creep
-        if (
-            harvesterCreeps.length > this._minHarvesterCreepCount &&
-            upgraderCreeps.length < this._minUpgraderCreepCount
-        ) {
-            const harvesterRoleDefinition = CREEP_ROLE_DEFINITIONS.get(CreepRole.Harvester);
-            if (!harvesterRoleDefinition) return;
-
-            this._spawn.spawnCreep(harvesterRoleDefinition.parts, Game.time.toString(), {
-                memory: {
-                    role: CreepRole.Upgrader
-                }
-            });
+        // Check if all minimums are satisfied
+        let allMinimumsSatisfied = true;
+        for (const [creepRole, spawnDefinition] of creepSpawnDefinitions) {
+            if (creeps.filter(c => c.memory.role === creepRole).length < spawnDefinition.min) {
+                allMinimumsSatisfied = false;
+                break;
+            }
         }
-        // Spawn new harvester creeps
-        else if (harvesterCreeps.length < this._maxHarvesterCreepCount) {
-            const upgraderRoleDefinition = CREEP_ROLE_DEFINITIONS.get(CreepRole.Upgrader);
-            if (!upgraderRoleDefinition) return;
 
-            this._spawn.spawnCreep(upgraderRoleDefinition.parts, Game.time.toString(), {
-                memory: {
-                    role: CreepRole.Harvester
-                }
-            });
+        // Spawn new creeps
+        for (const [creepRole, spawnDefinition] of creepSpawnDefinitions) {
+            const creepCountForRole = creeps.filter(c => c.memory.role === creepRole).length;
+
+            if (
+                creepCountForRole < spawnDefinition.min ||
+                (allMinimumsSatisfied && creepCountForRole < spawnDefinition.max)
+            ) {
+                const roleDefinition = CREEP_ROLE_DEFINITIONS.get(creepRole);
+                if (!roleDefinition) return;
+
+                this._spawn.spawnCreep(roleDefinition.parts, Game.time.toString(), {
+                    memory: {
+                        role: creepRole
+                    }
+                });
+                return;
+            }
         }
     }
 }
