@@ -6,7 +6,7 @@ import { Runnable } from "../interfaces";
  * Creates one BaseManager for every room
  */
 export class BasesManager implements Runnable {
-    private _baseManagers: Map<string, BaseManager> = new Map<string, BaseManager>();
+    private _baseManagers = new Map<string, BaseManager>();
     private _baseManagersTTL = 25;
 
     /**
@@ -22,7 +22,7 @@ export class BasesManager implements Runnable {
 
     /**
      * Update _baseManagers member by looping through every claimed spawn and creates a new BaseManager for every new unique room
-     * If there is a SpawnManager for a room that is no longer claimed, it will be removed
+     * If there is a BaseManager for a room that is no longer claimed, it will be removed
      */
     private updateBaseManagers(): void {
         this._baseManagers.forEach((baseManager, roomName) => {
