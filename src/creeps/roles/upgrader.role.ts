@@ -31,7 +31,10 @@ export class UpgraderRole {
      */
     private static getContainerInRange(creep: Creep): StructureContainer | null {
         const containers: StructureContainer[] = creep.room.find(FIND_STRUCTURES, {
-            filter: s => s.structureType === STRUCTURE_CONTAINER && s.pos.inRangeTo(creep, 3)
+            filter: s =>
+                s.structureType === STRUCTURE_CONTAINER &&
+                s.pos.inRangeTo(creep, 3) &&
+                s.store.getUsedCapacity(RESOURCE_ENERGY) > 0
         });
         if (containers.length === 0) {
             return null;

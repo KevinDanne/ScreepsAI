@@ -16,6 +16,8 @@ export function loop(): void {
 }
 
 /*
+    extend logic in upgrader to use resources from spawn if container is empty [DONE]
+    TODO move static helper methods to prototype [WIP]
     TODO Add logic in upgrader code to create construction site for storage next to the controller [IN PROGRESS]
     TODO build fewer better creeps instead of multiple weak creeps
 */
