@@ -10,8 +10,6 @@ const memoryManager = new MemoryManager();
  * Runs all managers
  */
 export function loop(): void {
-    console.log(`Current game tick is ${Game.time}`);
-
     basesManager.run();
     creepManager.run();
     memoryManager.run();

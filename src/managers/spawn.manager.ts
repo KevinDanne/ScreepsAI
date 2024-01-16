@@ -23,11 +23,10 @@ export class SpawnManager implements Runnable {
      */
     private spawnNewCreeps(): void {
         const creeps = this._spawn.room.find(FIND_MY_CREEPS);
-        const creepSpawnDefinitions = CREEP_SPAWN_DEFINITIONS.entries();
 
         // Check if all minimums are satisfied
         let allMinimumsSatisfied = true;
-        for (const [creepRole, spawnDefinition] of creepSpawnDefinitions) {
+        for (const [creepRole, spawnDefinition] of CREEP_SPAWN_DEFINITIONS) {
             if (creeps.filter(c => c.memory.role === creepRole).length < spawnDefinition.min) {
                 allMinimumsSatisfied = false;
                 break;
@@ -35,7 +34,7 @@ export class SpawnManager implements Runnable {
         }
 
         // Spawn new creeps
-        for (const [creepRole, spawnDefinition] of creepSpawnDefinitions) {
+        for (const [creepRole, spawnDefinition] of CREEP_SPAWN_DEFINITIONS) {
             const creepCountForRole = creeps.filter(c => c.memory.role === creepRole).length;
 
             if (
