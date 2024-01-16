@@ -79,7 +79,7 @@ export class UpgraderRole {
         if (creep.memory.targetContainerId) {
             targetSource = Game.getObjectById(creep.memory.targetContainerId);
         }
-        if (targetSource === null) {
+        if (targetSource === null || targetSource.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             targetSource = this.getContainerInRange(creep);
             creep.memory.targetContainerId = targetSource?.id;
         }
