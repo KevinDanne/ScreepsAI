@@ -1,6 +1,9 @@
-import { BasesManager, CreepManager } from "./managers";
-import { MemoryManager } from "./managers/memory.manager";
+import { BasesManager, CreepManager, MemoryManager } from "./managers";
 
+// Include prototype extensions
+import "./extensions";
+
+// Instantiate managers
 const basesManager = new BasesManager();
 const creepManager = new CreepManager();
 const memoryManager = new MemoryManager();
@@ -16,8 +19,8 @@ export function loop(): void {
 }
 
 /*
-    extend logic in upgrader to use resources from spawn if container is empty [DONE]
-    TODO move static helper methods to prototype [WIP]
-    TODO Add logic in upgrader code to create construction site for storage next to the controller [IN PROGRESS]
+    TODO add transporter role to bring resources from spawn to containers
+    TODO add simple creep state machine
+    TODO Add logic in upgrader code to create construction site for storage next to the controller
     TODO build fewer better creeps instead of multiple weak creeps
 */
