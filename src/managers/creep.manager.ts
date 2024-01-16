@@ -22,7 +22,7 @@ export class CreepManager implements Runnable {
      */
     private getCreepBehaviourByRole(role: CreepRole): CreepBehaviour | null {
         const creepRoleDefinition = CREEP_ROLE_DEFINITIONS.get(role);
-        if (!creepRoleDefinition) return null;
+        if (creepRoleDefinition === undefined) return null;
 
         return creepRoleDefinition.behaviour;
     }

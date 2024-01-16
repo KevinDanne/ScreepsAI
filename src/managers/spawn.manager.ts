@@ -42,7 +42,7 @@ export class SpawnManager implements Runnable {
                 (allMinimumsSatisfied && creepCountForRole < spawnDefinition.max)
             ) {
                 const roleDefinition = CREEP_ROLE_DEFINITIONS.get(creepRole);
-                if (!roleDefinition) return;
+                if (roleDefinition === undefined) return;
 
                 console.log("Spawning creep with role " + creepRole);
 

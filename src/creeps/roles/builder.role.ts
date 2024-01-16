@@ -1,8 +1,6 @@
-import { UpgraderRole } from "./upgrader.role";
-
 /**
  * Role for building constructions
- * If no construction sites are found it will act as upgrader
+ * If no construction sites are found it will repair structures
  */
 export class BuilderRole {
     /**
@@ -23,7 +21,7 @@ export class BuilderRole {
         }
 
         if (!creep.buildNearestConstruction()) {
-            UpgraderRole.run(creep);
+            creep.repairNearestBuilding();
             return;
         }
     }

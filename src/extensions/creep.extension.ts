@@ -1,10 +1,10 @@
 Creep.prototype.buildNearestConstruction = function (): boolean {
-    this.say("🏗️");
     const constructionSite = this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
-    if (!constructionSite) {
+    if (constructionSite === null) {
         return false;
     }
 
+    this.say("🏗️");
     if (this.build(constructionSite) === ERR_NOT_IN_RANGE) {
         this.moveTo(constructionSite);
     }
@@ -27,12 +27,7 @@ Creep.prototype.findContainerInRangeWithResources = function (): StructureContai
 };
 
 Creep.prototype.findNearestSpawn = function (): StructureSpawn | null {
-    const spawn = this.pos.findClosestByPath(FIND_MY_SPAWNS);
-    if (!spawn) {
-        return null;
-    }
-
-    return spawn;
+    return this.pos.findClosestByPath(FIND_MY_SPAWNS);
 };
 
 Creep.prototype.findSourceToHarvest = function (): Source | null {
@@ -59,9 +54,26 @@ Creep.prototype.findSourceToHarvest = function (): Source | null {
     return targetSource;
 };
 
+Creep.prototype.repairNearestBuilding = function (): boolean {
+    const damagedBuilding = this.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+        filter: s => s.hits < s.hitsMax
+    });
+    if (damagedBuilding === null) {
+        return false;
+    }
+
+    this.say("️🛠️");
+
+    if (this.repair(damagedBuilding) === ERR_NOT_IN_RANGE) {
+        this.moveTo(damagedBuilding);
+    }
+
+    return true;
+};
+
 Creep.prototype.transferToNearestSpawn = function (): boolean {
     const spawn = this.findNearestSpawn();
-    if (!spawn) {
+    if (spawn === null) {
         return false;
     }
 
@@ -74,7 +86,7 @@ Creep.prototype.transferToNearestSpawn = function (): boolean {
 };
 
 Creep.prototype.upgradeCurrentRoomController = function (): boolean {
-    if (!this.room.controller) {
+    if (this.room.controller === undefined) {
         return false;
     }
 

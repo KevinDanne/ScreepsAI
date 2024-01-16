@@ -34,6 +34,13 @@ declare global {
         findSourceToHarvest: () => Source | null;
 
         /**
+         * Finds nearest damaged building by path, move to it and repair it
+         *
+         * @returns boolean if damaged building exists and can be repaired
+         */
+        repairNearestBuilding: () => boolean;
+
+        /**
          * Finds nearest spawn by path, move to it and transfer resources to it
          *
          * @returns boolean if spawn is found

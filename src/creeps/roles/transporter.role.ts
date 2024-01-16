@@ -15,7 +15,7 @@ export class TransporterRole {
 
         // Run creep behaviour
         const spawn = creep.findNearestSpawn();
-        if (!spawn) {
+        if (spawn === null) {
             return;
         }
 
