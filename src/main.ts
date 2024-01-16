@@ -19,7 +19,6 @@ export function loop(): void {
 }
 
 /*
-    TODO add transporter role to bring resources from spawn to containers
     TODO add simple creep state machine
     TODO Add logic in upgrader code to create construction site for storage next to the controller
     TODO build fewer better creeps instead of multiple weak creeps

@@ -1,5 +1,6 @@
 export enum CreepRole {
     Harvester = "Harvester",
     Upgrader = "Upgrader",
-    Builder = "Builder"
+    Builder = "Builder",
+    Transporter = "Transporter"
 }

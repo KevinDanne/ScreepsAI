@@ -44,6 +44,8 @@ export class SpawnManager implements Runnable {
                 const roleDefinition = CREEP_ROLE_DEFINITIONS.get(creepRole);
                 if (!roleDefinition) return;
 
+                console.log("Spawning creep with role " + creepRole);
+
                 this._spawn.spawnCreep(roleDefinition.parts, Game.time.toString(), {
                     memory: {
                         role: creepRole
