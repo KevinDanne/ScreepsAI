@@ -19,7 +19,12 @@ export function loop(): void {
 }
 
 /*
-    TODO add simple creep state machine
-    TODO Add logic in upgrader code to create construction site for storage next to the controller
-    TODO build fewer better creeps instead of multiple weak creeps
+KNOWN BUGS:
+    Creeps blocking spawn
+    Transporter not transporting resources
+
+TODOS:
+    add simple creep state machine
+    Add logic in upgrader code to create construction site for storage next to the controller
+    build fewer better creeps instead of multiple weak creeps
 */

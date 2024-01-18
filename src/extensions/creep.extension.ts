@@ -55,7 +55,7 @@ Creep.prototype.findSourceToHarvest = function (): Source | null {
 };
 
 Creep.prototype.repairNearestBuilding = function (): boolean {
-    const damagedBuilding = this.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+    const damagedBuilding = this.pos.findClosestByPath(FIND_STRUCTURES, {
         filter: s => s.hits < s.hitsMax
     });
     if (damagedBuilding === null) {
