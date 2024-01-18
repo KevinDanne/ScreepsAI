@@ -1,9 +1,9 @@
-import { BuilderRole } from "../creeps/roles/builder.role";
 import { CreepRole, CreepRoleDefinition, CreepSpawnDefinition } from "../types";
+import { BuilderRole } from "../creeps/roles/builder.role";
 
 import { HarvesterRole } from "../creeps/roles/harvester.role";
-import { UpgraderRole } from "../creeps/roles/upgrader.role";
 import { TransporterRole } from "../creeps/roles/transporter.role";
+import { UpgraderRole } from "../creeps/roles/upgrader.role";
 
 export const CREEP_ROLE_DEFINITIONS: Map<CreepRole, CreepRoleDefinition> = new Map([
     [

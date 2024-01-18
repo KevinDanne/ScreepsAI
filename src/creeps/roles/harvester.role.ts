@@ -11,7 +11,7 @@ export class HarvesterRole {
             return;
         }
 
-        creep.transferToNearestSpawn();
+        creep.transferToNearestBuilding();
     }
 
     /**

@@ -18,7 +18,7 @@ export class UpgraderRole {
 
         // Run creep behaviour
         if (creep.memory.needsResources) {
-            creep.withdrawFromNearestStorage();
+            creep.withdrawFromNearestBuilding();
             return;
         }
 

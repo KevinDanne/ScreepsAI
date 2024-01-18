@@ -13,6 +13,13 @@ declare global {
         buildNearestConstruction: () => boolean;
 
         /**
+         * Find container structure in range
+         *
+         * @returns container in range or null if not found
+         */
+        findContainerInRange: () => StructureContainer | null;
+
+        /**
          * Find container structure in range with energy resources
          *
          * @returns container in range or null if not found
@@ -20,11 +27,32 @@ declare global {
         findContainerInRangeWithResources: () => StructureContainer | null;
 
         /**
+         * Find container structure in range with free capacity
+         *
+         * @returns container in range or null if not found
+         */
+        findContainerInRangeWithFreeCapacity: () => StructureContainer | null;
+
+        /**
          * Find nearest spawn
          *
          * @returns nearest spawn or null if not found
          */
         findNearestSpawn: () => StructureSpawn | null;
+
+        /**
+         * Find nearest spawn with energy resources
+         *
+         * @returns nearest spawn or null if not found
+         */
+        findNearestSpawnWithResources: () => StructureSpawn | null;
+
+        /**
+         * Find nearest spawn with free capacity
+         *
+         * @returns nearest spawn or null if not found
+         */
+        findNearestSpawnWithFreeCapacity: () => StructureSpawn | null;
 
         /**
          * Find the source with the fewest creeps in range
@@ -39,6 +67,13 @@ declare global {
          * @returns boolean if damaged building exists and can be repaired
          */
         repairNearestBuilding: () => boolean;
+
+        /**
+         * Finds nearest storage by path, move to it and transfer resources to it
+         *
+         * @returns boolean if storage is found
+         */
+        transferToNearestBuilding: () => boolean;
 
         /**
          * Finds nearest spawn by path, move to it and transfer resources to it
@@ -64,7 +99,14 @@ declare global {
          *
          *  @returns boolean if storage is found
          */
-        withdrawFromNearestStorage: () => boolean;
+        withdrawFromNearestBuilding: () => boolean;
+
+        /**
+         * Finds nearest spawn by path, move to it and withdraw resources from it
+         *
+         * @returns boolean if spawn is found
+         */
+        withdrawFromNearestSpawn: () => boolean;
     }
 
     // interface Memory {}

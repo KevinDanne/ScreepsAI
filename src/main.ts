@@ -1,7 +1,5 @@
-import { BasesManager, CreepManager, MemoryManager } from "./managers";
-
-// Include prototype extensions
 import "./extensions";
+import { BasesManager, CreepManager, MemoryManager } from "./managers";
 
 // Instantiate managers
 const basesManager = new BasesManager();
@@ -20,8 +18,7 @@ export function loop(): void {
 
 /*
 KNOWN BUGS:
-    Creeps blocking spawn
-    Transporter not transporting resources
+    -
 
 TODOS:
     add simple creep state machine

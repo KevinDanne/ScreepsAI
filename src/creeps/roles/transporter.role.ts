@@ -13,23 +13,21 @@ export class TransporterRole {
             creep.memory.needsResources = true;
         }
 
-        // Run creep behaviour
-        const spawn = creep.findNearestSpawn();
-        if (spawn === null) {
+        if (creep.memory.needsResources) {
+            creep.withdrawFromNearestSpawn();
             return;
         }
 
+        TransporterRole.transferToContainerWithFreeCapacity(creep);
+    }
+
+    private static transferToContainerWithFreeCapacity(creep: Creep) {
         let targetContainer: StructureContainer | null = null;
         if (creep.memory.targetContainerId) {
             targetContainer = Game.getObjectById(creep.memory.targetContainerId);
         }
         if (targetContainer === null || targetContainer.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
-            const containers: StructureContainer[] = creep.room.find(FIND_STRUCTURES, {
-                filter: s => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-            });
-            if (containers.length > 0) {
-                targetContainer = containers[0];
-            }
+            targetContainer = creep.findContainerInRangeWithFreeCapacity();
             creep.memory.targetContainerId = targetContainer?.id;
         }
         if (targetContainer === null) {
