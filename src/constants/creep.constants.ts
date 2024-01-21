@@ -40,15 +40,15 @@ export const CREEP_SPAWN_DEFINITIONS: Map<CreepRole, CreepSpawnDefinition> = new
     [
         CreepRole.Harvester,
         {
-            min: 2,
-            max: 4
+            min: 6,
+            max: 10
         }
     ],
     [
         CreepRole.Upgrader,
         {
             min: 1,
-            max: 2
+            max: 4
         }
     ],
     [

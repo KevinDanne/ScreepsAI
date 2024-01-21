@@ -12,43 +12,22 @@ Creep.prototype.buildNearestConstruction = function (): boolean {
     return true;
 };
 
-Creep.prototype.findContainerInRange = function (): StructureContainer | null {
-    const containers: StructureContainer[] = this.room.find(FIND_STRUCTURES, {
-        filter: s => s.structureType === STRUCTURE_CONTAINER && s.pos.inRangeTo(this, 3)
+Creep.prototype.findNearestContainer = function (): StructureContainer | null {
+    return this.pos.findClosestByPath(FIND_STRUCTURES, {
+        filter: s => s.structureType === STRUCTURE_CONTAINER
     });
-    if (containers.length === 0) {
-        return null;
-    }
-
-    return containers[0];
 };
 
-Creep.prototype.findContainerInRangeWithResources = function (): StructureContainer | null {
-    const containers: StructureContainer[] = this.room.find(FIND_STRUCTURES, {
-        filter: s =>
-            s.structureType === STRUCTURE_CONTAINER &&
-            s.pos.inRangeTo(this, 3) &&
-            s.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+Creep.prototype.findNearestContainerWithResources = function (): StructureContainer | null {
+    return this.pos.findClosestByPath(FIND_STRUCTURES, {
+        filter: s => s.structureType === STRUCTURE_CONTAINER && s.store.getUsedCapacity(RESOURCE_ENERGY) > 0
     });
-    if (containers.length === 0) {
-        return null;
-    }
-
-    return containers[0];
 };
 
-Creep.prototype.findContainerInRangeWithFreeCapacity = function (): StructureContainer | null {
-    const containers: StructureContainer[] = this.room.find(FIND_STRUCTURES, {
-        filter: s =>
-            s.structureType === STRUCTURE_CONTAINER &&
-            s.pos.inRangeTo(this, 3) &&
-            s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+Creep.prototype.findNearestContainerWithFreeCapacity = function (): StructureContainer | null {
+    return this.pos.findClosestByPath(FIND_STRUCTURES, {
+        filter: s => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
     });
-    if (containers.length === 0) {
-        return null;
-    }
-
-    return containers[0];
 };
 
 Creep.prototype.findNearestSpawn = function (): StructureSpawn | null {
@@ -65,6 +44,26 @@ Creep.prototype.findNearestSpawnWithFreeCapacity = function (): StructureSpawn |
     return this.pos.findClosestByPath(FIND_MY_SPAWNS, {
         filter: s => s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
     });
+};
+
+Creep.prototype.findNearestStorageBuilding = function (): StructureSpawn | StructureContainer | null {
+    const nearestContainer = this.findNearestContainer();
+    const nearestSpawn = this.findNearestSpawn();
+
+    if (nearestContainer === null && nearestSpawn === null) {
+        return null;
+    }
+
+    if (nearestSpawn === null && nearestContainer !== null) {
+        return nearestContainer;
+    }
+    if (nearestContainer === null && nearestSpawn !== null) {
+        return nearestSpawn;
+    }
+
+    return this.pos.getRangeTo(nearestContainer!.pos) >= this.pos.getRangeTo(nearestSpawn!.pos)
+        ? nearestContainer
+        : nearestSpawn;
 };
 
 Creep.prototype.findSourceToHarvest = function (): Source | null {
@@ -110,22 +109,18 @@ Creep.prototype.repairNearestBuilding = function (): boolean {
 
 Creep.prototype.transferToNearestBuilding = function (): boolean {
     let targetSource: StructureContainer | StructureSpawn | null = null;
-    if (this.memory.targetContainerId) {
-        targetSource = Game.getObjectById(this.memory.targetContainerId);
+    if (this.memory.targetStorageId) {
+        targetSource = Game.getObjectById(this.memory.targetStorageId);
     }
     if (targetSource === null || targetSource.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
-        targetSource = this.findContainerInRangeWithFreeCapacity();
-        this.memory.targetContainerId = targetSource?.id;
-    }
-    if (targetSource === null) {
-        targetSource = this.findNearestSpawnWithFreeCapacity();
+        targetSource = this.findNearestStorageBuilding();
+        this.memory.targetStorageId = targetSource?.id;
     }
     if (targetSource === null) {
         return false;
     }
 
     this.say("⚖️");
-    const error = this.withdraw(targetSource, RESOURCE_ENERGY);
     if (this.transfer(targetSource, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
         this.moveTo(targetSource);
     }
@@ -162,15 +157,12 @@ Creep.prototype.upgradeCurrentRoomController = function (): boolean {
 
 Creep.prototype.withdrawFromNearestBuilding = function (): boolean {
     let targetSource: StructureContainer | StructureSpawn | null = null;
-    if (this.memory.targetContainerId) {
-        targetSource = Game.getObjectById(this.memory.targetContainerId);
+    if (this.memory.targetStorageId) {
+        targetSource = Game.getObjectById(this.memory.targetStorageId);
     }
     if (targetSource === null || targetSource.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
-        targetSource = this.findContainerInRangeWithResources();
-        this.memory.targetContainerId = targetSource?.id;
-    }
-    if (targetSource === null) {
-        targetSource = this.findNearestSpawnWithResources();
+        targetSource = this.findNearestStorageBuilding();
+        this.memory.targetStorageId = targetSource?.id;
     }
     if (targetSource === null) {
         return false;

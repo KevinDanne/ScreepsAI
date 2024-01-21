@@ -13,25 +13,25 @@ declare global {
         buildNearestConstruction: () => boolean;
 
         /**
-         * Find container structure in range
+         * Find nearest container structure
          *
-         * @returns container in range or null if not found
+         * @returns nearest container or null if not found
          */
-        findContainerInRange: () => StructureContainer | null;
+        findNearestContainer: () => StructureContainer | null;
 
         /**
-         * Find container structure in range with energy resources
+         * Find nearest container structure with energy resources
          *
-         * @returns container in range or null if not found
+         * @returns nearest container or null if not found
          */
-        findContainerInRangeWithResources: () => StructureContainer | null;
+        findNearestContainerWithResources: () => StructureContainer | null;
 
         /**
-         * Find container structure in range with free capacity
+         * Find nearest container structure with free capacity
          *
-         * @returns container in range or null if not found
+         * @returns nearest container or null if not found
          */
-        findContainerInRangeWithFreeCapacity: () => StructureContainer | null;
+        findNearestContainerWithFreeCapacity: () => StructureContainer | null;
 
         /**
          * Find nearest spawn
@@ -53,6 +53,13 @@ declare global {
          * @returns nearest spawn or null if not found
          */
         findNearestSpawnWithFreeCapacity: () => StructureSpawn | null;
+
+        /**
+         * Find nearest building with storage
+         *
+         * @returns nearest storage building or null if not found
+         */
+        findNearestStorageBuilding: () => StructureSpawn | StructureContainer | null;
 
         /**
          * Find the source with the fewest creeps in range
@@ -114,7 +121,7 @@ declare global {
     interface CreepMemory {
         role: CreepRole;
         targetSourceId?: Id<Source>;
-        targetContainerId?: Id<StructureContainer>;
+        targetStorageId?: Id<StructureContainer> | Id<StructureSpawn>;
         needsResources?: boolean;
     }
 }
