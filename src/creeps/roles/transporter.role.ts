@@ -22,14 +22,7 @@ export class TransporterRole {
     }
 
     private static transferToContainerWithFreeCapacity(creep: Creep) {
-        let targetContainer: StructureContainer | StructureSpawn | null = null;
-        if (creep.memory.targetStorageId) {
-            targetContainer = Game.getObjectById(creep.memory.targetStorageId);
-        }
-        if (targetContainer === null || targetContainer.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
-            targetContainer = creep.findNearestContainerWithFreeCapacity();
-            creep.memory.targetStorageId = targetContainer?.id;
-        }
+        const targetContainer = creep.findNearestContainerWithFreeCapacity();
         if (targetContainer === null) {
             return;
         }

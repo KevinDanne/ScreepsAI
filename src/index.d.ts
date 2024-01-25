@@ -62,6 +62,20 @@ declare global {
         findNearestStorageBuilding: () => StructureSpawn | StructureContainer | null;
 
         /**
+         * Find nearest building with storage and resources
+         *
+         * @returns nearest storage building or null if not found
+         */
+        findNearestStorageBuildingWithResources: () => StructureSpawn | StructureContainer | null;
+
+        /**
+         * Find nearest building with storage and free capacity
+         *
+         * @returns nearest storage building or null if not found
+         */
+        findNearestStorageBuildingWithFreeCapacity: () => StructureSpawn | StructureContainer | null;
+
+        /**
          * Find the source with the fewest creeps in range
          *
          * @returns source to harvest or null if not found
@@ -121,7 +135,6 @@ declare global {
     interface CreepMemory {
         role: CreepRole;
         targetSourceId?: Id<Source>;
-        targetStorageId?: Id<StructureContainer> | Id<StructureSpawn>;
         needsResources?: boolean;
     }
 }
