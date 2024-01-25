@@ -12,6 +12,7 @@ export class BuilderRole {
             creep.memory.needsResources = false;
         } else if (!creep.memory.needsResources && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.needsResources = true;
+            delete creep.memory.targetStorageId;
         }
 
         // Run creep behaviour

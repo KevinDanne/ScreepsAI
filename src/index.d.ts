@@ -55,11 +55,25 @@ declare global {
         findNearestSpawnWithFreeCapacity: () => StructureSpawn | null;
 
         /**
-         * Find nearest building with storage
+         * Find nearest storage building
          *
          * @returns nearest storage building or null if not found
          */
         findNearestStorageBuilding: () => StructureSpawn | StructureContainer | null;
+
+        /**
+         * Find nearest storage building with energy resources
+         *
+         * @returns nearest storage building or null if not found
+         */
+        findNearestStorageBuildingWithResources: () => StructureSpawn | StructureContainer | null;
+
+        /**
+         * Find nearest storage building with free capacity
+         *
+         * @returns nearest storage building or null if not found
+         */
+        findNearestStorageBuildingWithFreeCapacity: () => StructureSpawn | StructureContainer | null;
 
         /**
          * Find the source with the fewest creeps in range

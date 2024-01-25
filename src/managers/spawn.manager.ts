@@ -15,6 +15,8 @@ export class SpawnManager implements Runnable {
      * Main loop to manage state and spawns
      */
     public run(): void {
+        if (this._spawn.spawning !== null) return;
+
         this.spawnNewCreeps();
     }
 
@@ -45,12 +47,12 @@ export class SpawnManager implements Runnable {
                 if (roleDefinition === undefined) return;
 
                 console.log(`[${this._spawn.name}]: spawning creep with role "${creepRole}"`);
-
-                this._spawn.spawnCreep(roleDefinition.parts, Game.time.toString(), {
+                const result = this._spawn.spawnCreep(roleDefinition.parts, Game.time.toString(), {
                     memory: {
                         role: creepRole
                     }
                 });
+                console.log(`[${this._spawn.name}]: spawn result: "${result}"`);
                 return;
             }
         }

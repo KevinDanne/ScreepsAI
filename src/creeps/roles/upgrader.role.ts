@@ -12,6 +12,7 @@ export class UpgraderRole {
         // Check if creep needs resources
         if (creep.memory.needsResources && creep.store.getFreeCapacity() === 0) {
             creep.memory.needsResources = false;
+            delete creep.memory.targetStorageId;
         } else if (!creep.memory.needsResources && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.needsResources = true;
         }

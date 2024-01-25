@@ -8,6 +8,7 @@ export class HarvesterRole {
     public static run(creep: Creep): void {
         if (creep.store.getFreeCapacity() > 0) {
             HarvesterRole.harvest(creep);
+            delete creep.memory.targetStorageId;
             return;
         }
 

@@ -61,7 +61,47 @@ Creep.prototype.findNearestStorageBuilding = function (): StructureSpawn | Struc
         return nearestSpawn;
     }
 
-    return this.pos.getRangeTo(nearestContainer!.pos) >= this.pos.getRangeTo(nearestSpawn!.pos)
+    return this.pos.getRangeTo(nearestContainer!.pos) <= this.pos.getRangeTo(nearestSpawn!.pos)
+        ? nearestContainer
+        : nearestSpawn;
+};
+
+Creep.prototype.findNearestStorageBuildingWithResources = function (): StructureSpawn | StructureContainer | null {
+    const nearestContainer = this.findNearestContainerWithResources();
+    const nearestSpawn = this.findNearestSpawnWithResources();
+
+    if (nearestContainer === null && nearestSpawn === null) {
+        return null;
+    }
+
+    if (nearestSpawn === null && nearestContainer !== null) {
+        return nearestContainer;
+    }
+    if (nearestContainer === null && nearestSpawn !== null) {
+        return nearestSpawn;
+    }
+
+    return this.pos.getRangeTo(nearestContainer!.pos) <= this.pos.getRangeTo(nearestSpawn!.pos)
+        ? nearestContainer
+        : nearestSpawn;
+};
+
+Creep.prototype.findNearestStorageBuildingWithFreeCapacity = function (): StructureSpawn | StructureContainer | null {
+    const nearestContainer = this.findNearestContainerWithFreeCapacity();
+    const nearestSpawn = this.findNearestSpawnWithFreeCapacity();
+
+    if (nearestContainer === null && nearestSpawn === null) {
+        return null;
+    }
+
+    if (nearestSpawn === null && nearestContainer !== null) {
+        return nearestContainer;
+    }
+    if (nearestContainer === null && nearestSpawn !== null) {
+        return nearestSpawn;
+    }
+
+    return this.pos.getRangeTo(nearestContainer!.pos) <= this.pos.getRangeTo(nearestSpawn!.pos)
         ? nearestContainer
         : nearestSpawn;
 };
@@ -113,7 +153,7 @@ Creep.prototype.transferToNearestBuilding = function (): boolean {
         targetSource = Game.getObjectById(this.memory.targetStorageId);
     }
     if (targetSource === null || targetSource.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
-        targetSource = this.findNearestStorageBuilding();
+        targetSource = this.findNearestStorageBuildingWithFreeCapacity();
         this.memory.targetStorageId = targetSource?.id;
     }
     if (targetSource === null) {
@@ -161,7 +201,7 @@ Creep.prototype.withdrawFromNearestBuilding = function (): boolean {
         targetSource = Game.getObjectById(this.memory.targetStorageId);
     }
     if (targetSource === null || targetSource.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
-        targetSource = this.findNearestStorageBuilding();
+        targetSource = this.findNearestStorageBuildingWithResources();
         this.memory.targetStorageId = targetSource?.id;
     }
     if (targetSource === null) {
