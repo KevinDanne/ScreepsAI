@@ -21,7 +21,7 @@ KNOWN BUGS:
     -
 
 TODOS:
-    add simple creep state machine
+    move common state machines to seperate file
     Add logic in upgrader code to create construction site for storage next to the controller
-    build fewer better creeps instead of multiple weak creeps
+    extend spawner logic to build fewer better creeps instead of multiple weak creeps
 */

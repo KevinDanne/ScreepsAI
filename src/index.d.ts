@@ -134,8 +134,8 @@ declare global {
 
     interface CreepMemory {
         role: CreepRole;
+        state?: string;
         targetSourceId?: Id<Source>;
         targetStorageId?: Id<StructureContainer> | Id<StructureSpawn>;
-        needsResources?: boolean;
     }
 }

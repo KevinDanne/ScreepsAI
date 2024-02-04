@@ -1,3 +1,6 @@
+import { runStates } from "../../utils/state-machine.util";
+import { TransporterStates } from "../../enums/creeps/states/transporter-states.enum";
+
 /**
  * Role for transporting resources from spawn to containers
  */
@@ -6,20 +9,26 @@ export class TransporterRole {
      * Main loop to manage state and creep behaviour
      */
     public static run(creep: Creep): void {
-        // Check if creep needs resources
-        if (creep.memory.needsResources && creep.store.getFreeCapacity() === 0) {
-            creep.memory.needsResources = false;
-            delete creep.memory.targetStorageId;
-        } else if (!creep.memory.needsResources && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
-            creep.memory.needsResources = true;
-        }
-
-        if (creep.memory.needsResources) {
-            creep.withdrawFromNearestSpawn();
-            return;
-        }
-
-        TransporterRole.transferToContainerWithFreeCapacity(creep);
+        runStates(
+            {
+                [TransporterStates.Withdraw]: (data: any, transporter: Creep): TransporterStates => {
+                    if (creep.store.getFreeCapacity() === 0) {
+                        return TransporterStates.Transport;
+                    }
+                    transporter.withdrawFromNearestSpawn();
+                    return TransporterStates.Withdraw;
+                },
+                [TransporterStates.Transport]: (data: any, transporter: Creep): TransporterStates => {
+                    if (creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
+                        return TransporterStates.Withdraw;
+                    }
+                    TransporterRole.transferToContainerWithFreeCapacity(transporter);
+                    return TransporterStates.Transport;
+                }
+            },
+            null,
+            creep
+        );
     }
 
     private static transferToContainerWithFreeCapacity(creep: Creep) {

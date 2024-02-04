@@ -1,6 +1,6 @@
 import { RunnableWithParam } from "../../interfaces";
 
-export * from "./creep-role.type";
+export * from "../../enums/creeps/creep-role.enum";
 export * from "./creep-role-definition.type";
 export * from "./creep-spawn-definition.type";
 

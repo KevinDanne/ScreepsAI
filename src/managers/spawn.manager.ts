@@ -15,8 +15,6 @@ export class SpawnManager implements Runnable {
      * Main loop to manage state and spawns
      */
     public run(): void {
-        if (this._spawn.spawning !== null) return;
-
         this.spawnNewCreeps();
     }
 

@@ -1,3 +1,6 @@
+import { HarvesterStates } from "../../enums/creeps/states/harvester-states.enum";
+import { runStates } from "../../utils/state-machine.util";
+
 /**
  * Role for harvesting resources
  */
@@ -6,13 +9,29 @@ export class HarvesterRole {
      * Main loop to manage state and creep behaviour
      */
     public static run(creep: Creep): void {
-        if (creep.store.getFreeCapacity() > 0) {
-            HarvesterRole.harvest(creep);
-            delete creep.memory.targetStorageId;
-            return;
-        }
+        runStates(
+            {
+                [HarvesterStates.Harvest]: (data: any, harvester: Creep): HarvesterStates => {
+                    if (harvester.store.getFreeCapacity() === 0) {
+                        return HarvesterStates.TransferToNearestBuilding;
+                    }
 
-        creep.transferToNearestBuilding();
+                    HarvesterRole.harvest(harvester);
+
+                    return HarvesterStates.Harvest;
+                },
+                [HarvesterStates.TransferToNearestBuilding]: (data: any, harvester: Creep): HarvesterStates => {
+                    if (harvester.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
+                        return HarvesterStates.Harvest;
+                    }
+
+                    harvester.transferToNearestBuilding();
+                    return HarvesterStates.TransferToNearestBuilding;
+                }
+            },
+            null,
+            creep
+        );
     }
 
     /**
