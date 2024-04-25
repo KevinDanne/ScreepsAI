@@ -16,7 +16,7 @@ export class HarvesterRole {
                         return HarvesterStates.TransferToNearestBuilding;
                     }
 
-                    HarvesterRole.harvest(harvester);
+                    harvester.harvestTargetSource();
 
                     return HarvesterStates.Harvest;
                 },
@@ -32,27 +32,5 @@ export class HarvesterRole {
             null,
             creep
         );
-    }
-
-    /**
-     * Find nearest construction site by path, move to it and build the construction
-     *
-     * @param creep builder creep
-     */
-    private static harvest(creep: Creep): void {
-        let targetSource: Source | null = null;
-        if (creep.memory.targetSourceId) {
-            targetSource = Game.getObjectById(creep.memory.targetSourceId);
-        }
-        if (targetSource === null) {
-            targetSource = creep.findSourceToHarvest();
-            creep.memory.targetSourceId = targetSource?.id;
-        }
-        if (targetSource === null) return;
-
-        creep.say("⛏️");
-        if (creep.harvest(targetSource) === ERR_NOT_IN_RANGE) {
-            creep.moveTo(targetSource);
-        }
     }
 }

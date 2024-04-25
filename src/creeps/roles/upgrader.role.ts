@@ -13,14 +13,14 @@ export class UpgraderRole {
         runStates(
             {
                 [UpgraderStates.Withdraw]: (data: any, upgrader: Creep): UpgraderStates => {
-                    if (creep.store.getFreeCapacity() === 0) {
+                    if (upgrader.store.getFreeCapacity() === 0) {
                         return UpgraderStates.Upgrade;
                     }
                     upgrader.withdrawFromNearestBuilding();
                     return UpgraderStates.Withdraw;
                 },
                 [UpgraderStates.Upgrade]: (data: any, upgrader: Creep): UpgraderStates => {
-                    if (creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
+                    if (upgrader.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
                         return UpgraderStates.Withdraw;
                     }
                     upgrader.upgradeCurrentRoomController();

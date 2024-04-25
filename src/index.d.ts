@@ -83,6 +83,12 @@ declare global {
         findSourceToHarvest: () => Source | null;
 
         /**
+         * Move to and harvest the room source with the id that is stored in memory.targetSourceId.
+         * If the targetSourceId is empty or the target source cannot be found, then findSourceToHarvest is used to get a new targetSourceId.
+         */
+        harvestTargetSource: () => void;
+
+        /**
          * Finds nearest damaged building by path, move to it and repair it
          *
          * @returns boolean if damaged building exists and can be repaired
@@ -102,6 +108,13 @@ declare global {
          * @returns boolean if spawn is found
          */
         transferToNearestSpawn: () => boolean;
+
+        /**
+         * Finds nearest container by path, move to it and transfer resources to it
+         *
+         * @returns boolean if container is found
+         */
+        transferToNearestContainer: () => boolean;
 
         /**
          * Moves to room controller and upgrade it

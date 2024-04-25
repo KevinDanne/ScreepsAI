@@ -130,6 +130,23 @@ Creep.prototype.findSourceToHarvest = function (): Source | null {
     return targetSource;
 };
 
+Creep.prototype.harvestTargetSource = function (): void {
+    let targetSource: Source | null = null;
+    if (this.memory.targetSourceId) {
+        targetSource = Game.getObjectById(this.memory.targetSourceId);
+    }
+    if (targetSource === null) {
+        targetSource = this.findSourceToHarvest();
+        this.memory.targetSourceId = targetSource?.id;
+    }
+    if (targetSource === null) return;
+
+    this.say("⛏️");
+    if (this.harvest(targetSource) === ERR_NOT_IN_RANGE) {
+        this.moveTo(targetSource);
+    }
+};
+
 Creep.prototype.repairNearestBuilding = function (): boolean {
     const damagedBuilding = this.pos.findClosestByPath(FIND_STRUCTURES, {
         filter: s => s.hits < s.hitsMax
@@ -177,6 +194,20 @@ Creep.prototype.transferToNearestSpawn = function (): boolean {
     this.say("\uD83C\uDFE6");
     if (this.transfer(spawn, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
         this.moveTo(spawn);
+    }
+
+    return true;
+};
+
+Creep.prototype.transferToNearestContainer = function (): boolean {
+    const targetContainer = this.findNearestContainerWithFreeCapacity();
+    if (targetContainer === null) {
+        return false;
+    }
+
+    this.say("📡");
+    if (this.transfer(targetContainer, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+        this.moveTo(targetContainer);
     }
 
     return true;
