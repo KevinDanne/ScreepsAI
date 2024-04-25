@@ -18,7 +18,7 @@ export class BaseManager implements Runnable {
      * Main loop to manage state and base behaviour
      */
     public run(): void {
-        if (Game.time % this._spawnManagersTTL === 0) {
+        if (this._spawnManagers.size === 0 || Game.time % this._spawnManagersTTL === 0) {
             this.updateSpawnManagers();
         }
 

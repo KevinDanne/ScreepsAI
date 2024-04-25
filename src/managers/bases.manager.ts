@@ -13,7 +13,7 @@ export class BasesManager implements Runnable {
      * Main loop to manage state and bases
      */
     public run(): void {
-        if (Game.time % this._baseManagersTTL === 0) {
+        if (this._baseManagers.size === 0 || Game.time % this._baseManagersTTL === 0) {
             this.updateBaseManagers();
         }
 
@@ -25,15 +25,15 @@ export class BasesManager implements Runnable {
      * If there is a BaseManager for a room that is no longer claimed, it will be removed
      */
     private updateBaseManagers(): void {
+        const spawns = Object.values(Game.spawns);
+
         this._baseManagers.forEach((baseManager, roomName) => {
-            if (!Object.values(Game.spawns).find(spawn => spawn.room.name === roomName)) {
+            if (!spawns.find(spawn => spawn.room.name === roomName)) {
                 this._baseManagers.delete(roomName);
             }
         });
-        Object.values(Game.spawns).forEach(spawn => {
-            if (!this._baseManagers.has(spawn.room.name)) {
-                this._baseManagers.set(spawn.room.name, new BaseManager(spawn.room));
-            }
+        spawns.forEach(spawn => {
+            this._baseManagers.set(spawn.room.name, new BaseManager(spawn.room));
         });
     }
 

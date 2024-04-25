@@ -34,7 +34,13 @@ export class CreepManager implements Runnable {
         for (const creepName in Game.creeps) {
             const creep = Game.creeps[creepName];
 
-            this.getCreepBehaviourByRole(creep.memory.role)?.run(creep);
+            const behaviour = this.getCreepBehaviourByRole(creep.memory.role);
+            if (behaviour === null) {
+                console.error(`Creep ${creepName} has invalid role: ${creep.memory.role}.`);
+                return;
+            }
+
+            behaviour.run(creep);
         }
     }
 }

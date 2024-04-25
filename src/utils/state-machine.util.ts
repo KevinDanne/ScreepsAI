@@ -15,7 +15,8 @@ export function runStates(stateHandlers: Record<string, CreepStateHandler>, data
     if (!(creep.memory.state in stateHandlers)) {
         const state = creep.memory.state;
         delete creep.memory.state;
-        throw new Error(`Creep ${creep.name} has no state "${state}"`);
+        console.error(`Creep ${creep.name} has invalid state "${state}"`);
+        return;
     }
 
     const stateHandler = stateHandlers[creep.memory.state];
